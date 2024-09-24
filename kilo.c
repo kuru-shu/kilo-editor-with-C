@@ -27,6 +27,7 @@ int main() {
   enableRawMode();
   char c;
   while (read(STDIN_FILENO, &c, 1) == 1 && c != 'q') {
+    // 制御文字かどうか
     if (iscntrl(c)) {
       printf("%d\n", c);
     } else {
