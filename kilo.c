@@ -19,6 +19,8 @@ void enableRawMode() {
   struct termios raw = orig_termios;
   // 現在の環境で ICRNL と IXON をオフにする
   raw.c_iflag &= ~(ICRNL | IXON);
+  // 現在の環境で OPOST をオフにする
+  raw.c_oflag &= ~(OPOST);
   // 現在の環境で echo と ICANON と ISIG と ISIG をオフにする
   raw.c_lflag &= ~(ECHO | ICANON | ISIG | ISIG);
 
@@ -31,9 +33,9 @@ int main() {
   while (read(STDIN_FILENO, &c, 1) == 1 && c != 'q') {
     // 制御文字かどうか
     if (iscntrl(c)) {
-      printf("%d\n", c);
+      printf("%d\r\n", c);
     } else {
-      printf("%d ('%c')\n", c, c);
+      printf("%d ('%c')\r\n", c, c);
     }
   }
 
