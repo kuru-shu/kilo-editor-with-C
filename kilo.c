@@ -17,11 +17,10 @@ void enableRawMode() {
   atexit(disableRawMode);
 
   struct termios raw = orig_termios;
-  // 現在の環境で ICRNL と IXON をオフにする
-  raw.c_iflag &= ~(ICRNL | IXON);
-  // 現在の環境で OPOST をオフにする
+  // 現在の環境でフラグをオフにする
+  raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
   raw.c_oflag &= ~(OPOST);
-  // 現在の環境で echo と ICANON と ISIG と ISIG をオフにする
+  raw.c_cflag |= (CS8);
   raw.c_lflag &= ~(ECHO | ICANON | ISIG | ISIG);
 
   // 現在の画面環境を更新
