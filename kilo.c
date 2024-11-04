@@ -17,8 +17,8 @@ void enableRawMode() {
   atexit(disableRawMode);
 
   struct termios raw = orig_termios;
-  // 現在の環境で echo と ICANON をオフにする
-  raw.c_lflag &= ~(ECHO | ICANON);
+  // 現在の環境で echo と ICANON と ISIG をオフにする
+  raw.c_lflag &= ~(ECHO | ICANON | ISIG);
 
   // 現在の画面環境を更新
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
