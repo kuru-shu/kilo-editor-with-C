@@ -17,6 +17,8 @@ void enableRawMode() {
   atexit(disableRawMode);
 
   struct termios raw = orig_termios;
+  // 現在の環境で IXON をオフにする
+  raw.c_iflag &= ~(IXON);
   // 現在の環境で echo と ICANON と ISIG をオフにする
   raw.c_lflag &= ~(ECHO | ICANON | ISIG);
 
