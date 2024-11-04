@@ -23,19 +23,27 @@ void enableRawMode() {
   raw.c_cflag |= (CS8);
   raw.c_lflag &= ~(ECHO | ICANON | ISIG | ISIG);
 
+  // リアルタイム入力受付
+  // VMIN: 受付文字数
+  // VTIME: タイムアウト
+  raw.c_cc[VMIN] = 0;
+  raw.c_cc[VTIME] = 1;
+
   // 現在の画面環境を更新
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 int main() {
   enableRawMode();
-  char c;
-  while (read(STDIN_FILENO, &c, 1) == 1 && c != 'q') {
+  while (1) {
+    char c = '\0';
+    read(STDIN_FILENO, &c, 1);
     // 制御文字かどうか
     if (iscntrl(c)) {
       printf("%d\r\n", c);
     } else {
       printf("%d ('%c')\r\n", c, c);
     }
+    if (c == 'q') break;
   }
 
   return 0;
